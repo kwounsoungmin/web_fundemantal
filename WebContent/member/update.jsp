@@ -1,27 +1,29 @@
+<%@page import="kr.co.acorn.dao.MemberDao"%>
+<%@page import="kr.co.acorn.dto.MemberDto"%>
 <%@page import="kr.co.acorn.dto.DeptDto"%>
 <%@page import="kr.co.acorn.dto.EmpDto"%>
 <%@page import="kr.co.acorn.dao.EmpDao"%>
 <%@ page pageEncoding="utf-8" %>
 <%
 	request.setCharacterEncoding("utf-8");
-	int no = Integer.parseInt(request.getParameter("no"));
-	String name = request.getParameter("name");
-	String job = request.getParameter("job");
-	int mgr = Integer.parseInt(request.getParameter("mgr"));
-	int sal = Integer.parseInt(request.getParameter("sal"));
-	int comm = Integer.parseInt(request.getParameter("comm"));
-	int deptNo = Integer.parseInt(request.getParameter("deptNo"));
+
+int no = Integer.parseInt(request.getParameter("no"));
+String email = request.getParameter("m_email");
+String name = request.getParameter("m_name");
+String password = request.getParameter("m_pwd");
+String phone = request.getParameter("m_phone");
+String regdate = request.getParameter("m_regdate");
 	String tempPage = request.getParameter("page");
 	
-	DeptDto deptDto = new DeptDto(deptNo,null,null);
+	//MemberDto MemberDto = new MemberDto(email,null,null);
 	
-	EmpDao dao = EmpDao.getInstance();
-	EmpDto dto = new EmpDto(no,name,job,mgr,null,sal,comm,deptDto);
+	MemberDao dao = MemberDao.getInstance();
+	MemberDto dto = new MemberDto(email,name,password,phone,regdate);
 	boolean isSuccess = dao.update(dto);
 	if(isSuccess){
 %>
 	<script>
-	alert('사원정보가 수정되었습니다.');
+	alert('회원정보가 수정되었습니다.');
 	location.href="view.jsp?page=<%=tempPage%>&no=<%=no%>";
 	</script>
 <%	}else{ %>

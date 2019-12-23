@@ -58,7 +58,40 @@ public class MemberDao {
 		}
 		return isSuccess;
 	}
+	public int getTotalRows() {
+		int count = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs= null;
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT COUNT(email) ");
+			sql.append("FROM member ");
 	
+			pstmt = con.prepareStatement(sql.toString());
+			int index = 0;
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				index = 0;
+				count = rs.getInt(++index);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(con != null) con.close();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+			}
+		}
+		return count;
+	}
 	
 	public boolean insert(MemberDto dto) {
 		boolean isSuccess = false;
@@ -174,7 +207,7 @@ public class MemberDao {
 				String password = rs.getString(++index);
 				String phone = rs.getString(++index);
 				String regdate = rs.getString(++index);
-				list.add(new DeptDto(email, name, password,phone,regdate));
+				list.add(new MemberDto(email, name, password,phone,regdate));
 			}
 
 		} catch (SQLException e) {
@@ -195,7 +228,78 @@ public class MemberDao {
 		return list;
 	}
 	
+	public boolean update(MemberDto dto) {
+		boolean isSuccess= false;
+		Connection con =null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("UPDATE member SET  m_email=?,m_name=?,m_pwd=?,m_phone=?,m_regdate=? WHERE email =?" );
+
+			pstmt = con.prepareStatement(sql.toString());
+			int index = 0;
+			pstmt.setString(++index, dto.getEmail());
+			pstmt.setString(++index, dto.getName());
+			pstmt.setString(++index, dto.getPassword());
+			pstmt.setString(++index, dto.getPhone());
+			pstmt.setString(++index, dto.getRegdate());
+			pstmt.executeUpdate();
+			isSuccess = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+			}
+		}
+		return isSuccess;
+	}
+	
+	public boolean delete(int no) {
+		boolean isSuccess= false;
+		Connection con =null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("DELETE FROM Member WHERE email=? " );
+
+			pstmt = con.prepareStatement(sql.toString());
+			int index = 0;
+			pstmt.setInt(++index, no);
+
+			pstmt.executeUpdate();
+			isSuccess = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+			}
+		}
+		return isSuccess;
+	}
+	
+	
+
 }
+
+
 
 
 
