@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import kr.co.acorn.dto.DeptDto;
 import kr.co.acorn.dto.EmpDto;
 import kr.co.acorn.util.ConnLocator;
@@ -58,9 +61,9 @@ public class EmpDao {
 		return count;
 	}
 	
-	public ArrayList<EmpDto> select(int start, int len){
-		ArrayList<EmpDto> list = new ArrayList<EmpDto>();
-		
+	public String selectJson(int start, int len){
+		JSONObject jsonObj = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs= null;
@@ -80,6 +83,7 @@ public class EmpDao {
 			
 			rs = pstmt.executeQuery();
 			DeptDto deptDto = null;
+			JSONObject item = null;
 			while(rs.next()) {
 				index = 0;
 				int no = rs.getInt(++index);
@@ -92,9 +96,13 @@ public class EmpDao {
 				deptDto = new DeptDto(deptNo,dname,null);
 				
 				String hiredate = rs.getString(++index);
-				list.add(new EmpDto(no,name,job,mgr,hiredate,deptDto));
+				
+				item = new JSONObject();
+				item.put("no",no);
+				item.put("name",name);
+				jsonArray.add(item);
 			}
-			
+			jsonObj.put("emplist",jsonArray);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,7 +115,7 @@ public class EmpDao {
 				// TODO: handle exception
 			}
 		}
-		return list;
+		return jsonObj.toString();
 	}
 	
 	public int getMaxNextNo() {
