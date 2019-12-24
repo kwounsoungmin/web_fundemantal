@@ -161,7 +161,7 @@
 		</nav>
         
         <div class="text-right">
-			<a href="write.jsp?page=<%=cPage %>" class="btn btn-outline-secondary">사원등록</a>
+			<a href="write.jsp?page=<%=cPage %>" class="btn btn-outline-secondary">회원등록</a>
 		</div>
         
       </div>

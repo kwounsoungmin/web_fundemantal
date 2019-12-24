@@ -1,7 +1,5 @@
 <%@ page pageEncoding="utf-8" %>
 <%@ include file="../inc/header.jsp" %>  
-
-
   <!-- breadcrumb start-->
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -10,7 +8,6 @@
     </ol>
   </nav>
   <!-- breadcrumb end-->
-  
   <%
   	int cPage = 0;
 	String tempPage = request.getParameter("page");

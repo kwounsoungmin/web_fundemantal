@@ -3,7 +3,7 @@
     <footer class="bd-dark bd-footer fixed-bottom " style="color: black;padding:iem;">
             <div class="container-fluid text-center">
                 
-                <p>Since 2019-12-13</p>
+                <p>서비스</p>
              
              
             </div>
